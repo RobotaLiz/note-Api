@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@middy/core": "^4.6.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "nanoid": "^5.0.3"
+  },
+  "devDependencies": {
+    "serverless-webpack": "^5.13.0"
+  }
+}

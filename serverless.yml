@@ -1,0 +1,85 @@
+service: note-Api
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  profile: Liza-test
+  region: eu-north-1
+  iam:
+    role: arn:aws:iam::116267525892:role/serverless-lambda-role
+
+plugins:
+  - serverless-webpack
+
+package:
+  individually: true
+
+functions:
+  function1:
+    handler: index.handler
+
+  signUp:
+    handler: functions/signup/index.handler
+    events:
+      - httpApi:
+          path: '/api/user/signup'
+          method: 'POST'
+  login:
+    handler: functions/login/index.handler
+    events:
+      - httpApi:
+          path: '/api/user/login'
+          method: 'POST'
+  getNotes:
+    handler: functions/getNotes/index.handler
+    events:
+      - httpApi:
+          path: '/api/notes'
+          method: 'GET'
+  postNotes:
+    handler: functions/postNotes/index.handler
+    events:
+      - httpApi:
+          path: '/api/notes'
+          method: 'POST'
+  deleteNotes:
+    handler: functions/deleteNotes/index.handler
+    events:
+      - httpApi:
+          path: '/api/notes/{id}'
+          method: 'DELETE'
+  putNotes:
+    handler: functions/putNotes/index.handler
+    events:
+      - httpApi:
+          path: '/api/notes/{id}'
+          method: 'PUT'
+
+resources:
+  Resources:
+    NoteDB:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Note-db
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id  
+            KeyType: HASH  
+        BillingMode: PAY_PER_REQUEST 
+   
+    userNoteDB:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: note-accounts
+        AttributeDefinitions:
+          - AttributeName: username
+            AttributeType: S
+        KeySchema:
+          - AttributeName: username  
+            KeyType: HASH  
+        BillingMode: PAY_PER_REQUEST 
+         
+   
